@@ -1,6 +1,6 @@
 import { List, Datagrid, TextField, NumberField } from "react-admin";
 import ProductFilter from "./ProductFilter";
-import MyCustomActionComponent from "../components/MyCustomActionComponent";
+import MyCustomActionComponent from "../../components/MyCustomActionComponent";
 
 const ProductList = (props) => (
   <List filters={<ProductFilter />} {...props}>
