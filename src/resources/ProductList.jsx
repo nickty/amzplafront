@@ -1,12 +1,6 @@
-import {
-  List,
-  Datagrid,
-  TextField,
-  NumberField,
-  EditButton,
-  DeleteButton,
-} from "react-admin";
+import { List, Datagrid, TextField, NumberField } from "react-admin";
 import ProductFilter from "./ProductFilter";
+import MyCustomActionComponent from "../components/MyCustomActionComponent";
 
 const ProductList = (props) => (
   <List filters={<ProductFilter />} {...props}>
@@ -15,8 +9,8 @@ const ProductList = (props) => (
       <TextField source="name" />
       <NumberField source="price" />
       <TextField source="description" />
-      <EditButton basePath="/products" />
-      <DeleteButton basePath="/products" />
+      <MyCustomActionComponent buttonText="Edit" color="#333" />
+      <MyCustomActionComponent buttonText="Delete" color="red" />
     </Datagrid>
   </List>
 );
