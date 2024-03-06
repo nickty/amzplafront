@@ -16,24 +16,29 @@ const httpClient = (url, options = {}) => {
 const dataProvider = {
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const query = {
       skip: (page - 1) * perPage,
       limit: perPage,
+      _sort: field,
+      _order: order,
     };
+
+    // Add filters to the query
+    Object.keys(params.filter).forEach((key) => {
+      query[key] = params.filter[key];
+    });
+
     const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
 
     return httpClient(url).then(({ headers, json }) => {
-      // Map items to ensure each has an 'id' field
+      // Ensure each item has an 'id' field, map from '_id' if necessary
       const data = json.map((item) => ({
         ...item,
-        id: item._id, // Adapt this line if your identifier has a different name
+        id: item._id || item.id, // Adapt based on your identifier field
       }));
 
-      let total = data.length; // Fallback total
-      const contentRange = headers.get("Content-Range");
-      if (contentRange) {
-        total = parseInt(contentRange.split("/").pop(), 10);
-      }
+      let total = parseInt(headers.get("X-Total-Count"), 10); // Use the X-Total-Count header for total count
 
       return { data, total };
     });

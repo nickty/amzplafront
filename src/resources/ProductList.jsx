@@ -6,9 +6,10 @@ import {
   EditButton,
   DeleteButton,
 } from "react-admin";
+import ProductFilter from "./ProductFilter";
 
 const ProductList = (props) => (
-  <List {...props}>
+  <List filters={<ProductFilter />} {...props}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
