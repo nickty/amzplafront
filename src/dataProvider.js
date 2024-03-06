@@ -39,11 +39,15 @@ const dataProvider = {
     });
   },
   getOne: (resource, params) => {
-    return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
-      ({ json }) => ({
-        data: json,
-      })
-    );
+    return httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => {
+      // console.log("check response for get one", json);
+      if (!json || !json._id) {
+        throw new Error(
+          `The response for ${resource} with ID ${params._id} does not contain an 'id' key.`
+        );
+      }
+      return { data: { ...json, id: json._id } };
+    });
   },
   create: (resource, params) => {
     return httpClient(`${apiUrl}/${resource}`, {
@@ -54,12 +58,18 @@ const dataProvider = {
     }));
   },
   update: (resource, params) => {
-    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    const { id, data } = params;
+    return httpClient(`${apiUrl}/${resource}/${id}`, {
       method: "PUT",
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({
-      data: json,
-    }));
+      body: JSON.stringify(data),
+    }).then(({ json }) => {
+      if (!json || !json._id) {
+        throw new Error(
+          `The response for updating ${resource} with ID ${id} does not contain an 'id' key.`
+        );
+      }
+      return { data: { ...data, id: json._id } };
+    });
   },
   delete: (resource, params) => {
     return httpClient(`${apiUrl}/${resource}/${params.id}`, {
