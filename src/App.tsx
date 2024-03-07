@@ -5,12 +5,16 @@ import dataProvider from "./dataProvider";
 import ProductCreate from "./resources/product/ProductCreate";
 import { Route } from "react-router-dom";
 import ComingSoon from "./components/ComingSoon";
-import { MyMenu } from "./components/MyMenu";
 import { MyLayout } from "./components/MyLayout";
 import Dashboard from "./components/Dashboard";
+import authProvider from "./authProvider";
 
 const App = () => (
-  <Admin layout={MyLayout} dataProvider={dataProvider}>
+  <Admin
+    layout={MyLayout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+  >
     <Route exact path="/dashboard" element={<Dashboard />} />
     <Resource
       name="products"
