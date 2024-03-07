@@ -24,6 +24,7 @@ export const MyMenu = () => {
         onClick={() => navigate("/dashboard")}
       />
       <Menu.ResourceItem name="products" />
+      <Menu.ResourceItem name="users" />
       {/* Other resource items */}
       {/* Custom service items */}
       {/* <MenuItemLink
