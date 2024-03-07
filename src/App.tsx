@@ -8,12 +8,15 @@ import ComingSoon from "./components/ComingSoon";
 import { MyLayout } from "./components/MyLayout";
 import Dashboard from "./components/Dashboard";
 import authProvider from "./authProvider";
+import Registration from "./pages/Registration";
+import CustomLoginPage from "./pages/CustomLoginPage";
 
 const App = () => (
   <Admin
     layout={MyLayout}
     authProvider={authProvider}
     dataProvider={dataProvider}
+    loginPage={<CustomLoginPage />}
   >
     <Route exact path="/dashboard" element={<Dashboard />} />
     <Resource
@@ -22,7 +25,10 @@ const App = () => (
       edit={ProductEdit}
       create={ProductCreate}
     />
-    <CustomRoutes>
+    <CustomRoutes noLayout>
+      <Route key="register" path="/register" element={<Registration />} />,
+    </CustomRoutes>
+    {/* <CustomRoutes>
       <Route
         path="/market-analysis"
         element={<ComingSoon service="Market Analysis" />}
@@ -53,7 +59,7 @@ const App = () => (
         path="/sustainability-tracking"
         element={<ComingSoon service="Sustainability Tracking" />}
       />
-    </CustomRoutes>
+    </CustomRoutes> */}
   </Admin>
 );
 

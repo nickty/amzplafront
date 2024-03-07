@@ -26,7 +26,7 @@ export const MyMenu = () => {
       <Menu.ResourceItem name="products" />
       {/* Other resource items */}
       {/* Custom service items */}
-      <MenuItemLink
+      {/* <MenuItemLink
         to="/market-analysis"
         primaryText="Market Analysis"
         leftIcon={<StorefrontOutlinedIcon />}
@@ -79,7 +79,7 @@ export const MyMenu = () => {
         primaryText="Sustainability Tracking"
         leftIcon={<StackedLineChartOutlinedIcon />}
         onClick={() => navigate("/sustainability-tracking")}
-      />
+      /> */}
       {/* Add more menu items for other coming soon services */}
     </Menu>
   );
