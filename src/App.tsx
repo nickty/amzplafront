@@ -20,7 +20,9 @@ const App = () => (
     dataProvider={dataProvider}
     loginPage={<CustomLoginPage />}
   >
-    <Route exact path="/dashboard" element={<Dashboard />} />
+    <CustomRoutes>
+      <Route path="/dashboard" element={<Dashboard />} />
+    </CustomRoutes>
     <Resource
       name="products"
       list={ProductList}
