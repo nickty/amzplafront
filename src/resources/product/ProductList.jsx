@@ -9,6 +9,7 @@ const ProductList = (props) => (
       <TextField source="name" />
       <NumberField source="price" />
       <TextField source="description" />
+      <TextField source="user" label="User ID" />
       <MyCustomActionComponent buttonText="Edit" color="#333" />
       <MyCustomActionComponent buttonText="Delete" color="red" />
     </Datagrid>

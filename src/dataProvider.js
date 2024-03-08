@@ -8,7 +8,9 @@ const httpClient = (url, options = {}) => {
     options.headers = new Headers({ Accept: "application/json" });
   }
   // Add your authorization token if required
-  const token = localStorage.getItem("token");
+  // const auth = localStorage.getItem("auth");
+  const auth = JSON.parse(localStorage.getItem("auth"));
+  const token = auth?.token;
   options.headers.set("Authorization", `Bearer ${token}`);
   return fetchUtils.fetchJson(url, options);
 };

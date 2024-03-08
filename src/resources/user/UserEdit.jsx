@@ -22,13 +22,8 @@ const UserEdit = (props) => {
     { id: "enterprise", name: "Enterprise" },
   ];
 
-  const onSave = () => {
-    notify("User updated");
-    redirect("/users");
-  };
-
   return (
-    <Edit {...props} undoable={false} onSave={onSave}>
+    <Edit {...props} undoable={false}>
       <SimpleForm>
         <TextInput disabled source="id" />
         <TextInput source="email" />
