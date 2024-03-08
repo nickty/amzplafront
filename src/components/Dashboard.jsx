@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePermissions } from "react-admin";
 import {
   Box,
@@ -7,8 +7,10 @@ import {
   Typography,
   Grid,
   Link as MuiLink,
+  CircularProgress, // Import CircularProgress for loading icon
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import useClient from "../utils/useClientUtilsFunc";
 
 const Dashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -20,6 +22,30 @@ const Dashboard = () => {
     }
   }, [permissions]);
 
+  const options = useMemo(
+    () => ({
+      method: "GET",
+      headers: {
+        // Any headers you want to be stable across renders
+      },
+    }),
+    []
+  );
+
+  const {
+    data: productCount,
+    loading: productLoading,
+    error: productError,
+  } = useClient(
+    "http://localhost:4000/api/products/countTotalProduct",
+    options
+  );
+  const {
+    data: userCount,
+    loading: userLoading,
+    error: userError,
+  } = useClient("http://localhost:4000/api/users/countTotalUser", options);
+
   return (
     <Box sx={{ mt: 5, mx: 2 }}>
       <Grid container spacing={3}>
@@ -30,8 +56,11 @@ const Dashboard = () => {
                 Products
               </Typography>
               <Typography color="textSecondary" gutterBottom>
-                Total number of products: 100{" "}
-                {/* Dynamically replace with actual count */}
+                {productLoading ? (
+                  <CircularProgress /> // Show loading icon while product count is loading
+                ) : (
+                  `Total Products: ${productCount?.count}`
+                )}
               </Typography>
               <MuiLink component={Link} to="/products" underline="hover">
                 View Products
@@ -47,8 +76,11 @@ const Dashboard = () => {
                   Users
                 </Typography>
                 <Typography color="textSecondary" gutterBottom>
-                  Total number of users: 50{" "}
-                  {/* Dynamically replace with actual count */}
+                  {userLoading ? (
+                    <CircularProgress /> // Show loading icon while user count is loading
+                  ) : (
+                    `Total Users: ${userCount?.count}`
+                  )}
                 </Typography>
                 <MuiLink component={Link} to="/users" underline="hover">
                   View Users
