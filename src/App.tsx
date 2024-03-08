@@ -11,6 +11,7 @@ import authProvider from "./authProvider";
 import Registration from "./pages/Registration";
 import CustomLoginPage from "./pages/CustomLoginPage";
 import UserList from "./resources/user/UserList";
+import UserEdit from "./resources/user/UserEdit";
 
 const App = () => (
   <Admin
@@ -26,7 +27,7 @@ const App = () => (
       edit={ProductEdit}
       create={ProductCreate}
     />
-    <Resource name="users" list={UserList} />
+    <Resource name="users" list={UserList} edit={UserEdit} />
     <CustomRoutes noLayout>
       <Route key="register" path="/register" element={<Registration />} />,
     </CustomRoutes>
