@@ -35,7 +35,7 @@ const Dashboard = () => {
   const {
     data: productCount,
     loading: productLoading,
-    error: productError,
+    // error: productError,
   } = useClient(
     "http://localhost:4000/api/products/countTotalProduct",
     options
@@ -43,7 +43,7 @@ const Dashboard = () => {
   const {
     data: userCount,
     loading: userLoading,
-    error: userError,
+    // error: userError,
   } = useClient("http://localhost:4000/api/users/countTotalUser", options);
 
   return (
@@ -57,7 +57,7 @@ const Dashboard = () => {
               </Typography>
               <Typography color="textSecondary" gutterBottom>
                 {productLoading ? (
-                  <CircularProgress /> // Show loading icon while product count is loading
+                  <CircularProgress size={12} /> // Show loading icon while product count is loading
                 ) : (
                   `Total Products: ${productCount?.count}`
                 )}
@@ -77,7 +77,7 @@ const Dashboard = () => {
                 </Typography>
                 <Typography color="textSecondary" gutterBottom>
                   {userLoading ? (
-                    <CircularProgress /> // Show loading icon while user count is loading
+                    <CircularProgress size={12} /> // Show loading icon while user count is loading
                   ) : (
                     `Total Users: ${userCount?.count}`
                   )}

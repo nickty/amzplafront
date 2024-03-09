@@ -39,7 +39,6 @@ export default {
       // If there's no data in localStorage, reject the promise
       return Promise.reject();
     }
-
     try {
       const { role } = JSON.parse(storedData);
       // Ensure the role exists; otherwise, reject the promise
