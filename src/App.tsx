@@ -29,7 +29,11 @@ const App = () => (
       edit={ProductEdit}
       create={ProductCreate}
     />
-    <Resource name="users" list={UserList} edit={UserEdit} />
+    {(permissions) => [
+      permissions?.includes("admin") ? (
+        <Resource name="users" list={UserList} edit={UserEdit} />
+      ) : null,
+    ]}
     <CustomRoutes noLayout>
       <Route key="register" path="/register" element={<Registration />} />,
     </CustomRoutes>
