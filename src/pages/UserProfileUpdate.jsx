@@ -8,23 +8,19 @@ const UserProfileUpdate = () => {
   const { register, handleSubmit, reset } = useForm();
   const [loading, setLoading] = useState(true);
 
-  const { identity, loading: identityLoading } = useGetIdentity();
-
-  console.log("identity", identity);
-  console.log("register", register);
-  console.log("reset", reset);
+  const { error, data, isLoading: identityLoading } = useGetIdentity();
 
   // Fetch user's current information from the backend
   useEffect(() => {
     if (identityLoading) return; // Wait until the identity is loaded
-    if (!identity) {
+    if (!data) {
       notify("User is not authenticated.", "warning");
       setLoading(false);
       return;
     }
 
     dataProvider
-      .getOne("users", { id: identity.id }) // Use the identity ID
+      .getOne("users", { id: data.id }) // Use the identity ID
       .then(({ data }) => {
         reset(data); // Populate the form with the user's current information
         setLoading(false);
@@ -33,19 +29,19 @@ const UserProfileUpdate = () => {
         notify("Error loading user profile", "error");
         setLoading(false);
       });
-  }, [identity, identityLoading, dataProvider, notify, reset]);
+  }, [data, identityLoading, dataProvider, notify, reset]);
 
   // Handle form submission
   const onSubmit = (formData) => {
     console.log("on submit called", formData);
-    if (!identity) {
+    if (!data) {
       notify("User is not authenticated.", "warning");
       return;
     }
 
     // formData now contains the form inputs
     dataProvider
-      .update("users", { id: identity.id, data: formData })
+      .update("users", { id: data.id, data: formData })
       .then(() => {
         notify("Profile updated successfully", "info");
       })
@@ -60,24 +56,24 @@ const UserProfileUpdate = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Name:</label>
-        <input name="fullName" ref={register({ required: true })} />
+        <input {...register("fullName", { required: true })} />
       </div>
-      {/* <div>
+      <div>
         <label>Address:</label>
-        <input name="address" ref={register} />
+        <input {...register("address")} />
       </div>
       <div>
         <label>Phone Number:</label>
-        <input name="phone" ref={register} />
+        <input {...register("phone")} />
       </div>
       <div>
         <label>Subscription:</label>
-        <select name="subscription" ref={register}>
+        <select {...register("subscription")}>
           <option value="free">Free</option>
           <option value="basic">Basic</option>
           <option value="premium">Premium</option>
         </select>
-      </div> */}
+      </div>
       <button type="submit">Update Profile</button>
     </form>
   );
