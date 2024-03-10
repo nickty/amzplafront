@@ -1,6 +1,52 @@
 import { useState, useEffect } from "react";
 import { useDataProvider, useGetIdentity, useNotify } from "react-admin";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import Subscription from "../components/Subscription";
+
+// Styled components
+const FormContainer = styled.div`
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Label = styled.label`
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const Select = styled.select`
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const Button = styled.button`
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 const UserProfileUpdate = () => {
   const dataProvider = useDataProvider();
@@ -10,9 +56,8 @@ const UserProfileUpdate = () => {
 
   const { error, data, isLoading: identityLoading } = useGetIdentity();
 
-  // Fetch user's current information from the backend
   useEffect(() => {
-    if (identityLoading) return; // Wait until the identity is loaded
+    if (identityLoading) return;
     if (!data) {
       notify("User is not authenticated.", "warning");
       setLoading(false);
@@ -20,9 +65,9 @@ const UserProfileUpdate = () => {
     }
 
     dataProvider
-      .getOne("users", { id: data.id }) // Use the identity ID
+      .getOne("users", { id: data.id })
       .then(({ data }) => {
-        reset(data); // Populate the form with the user's current information
+        reset(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -31,15 +76,12 @@ const UserProfileUpdate = () => {
       });
   }, [data, identityLoading, dataProvider, notify, reset]);
 
-  // Handle form submission
   const onSubmit = (formData) => {
-    console.log("on submit called", formData);
     if (!data) {
       notify("User is not authenticated.", "warning");
       return;
     }
 
-    // formData now contains the form inputs
     dataProvider
       .update("users", { id: data.id, data: formData })
       .then(() => {
@@ -53,29 +95,33 @@ const UserProfileUpdate = () => {
   if (loading || identityLoading) return <div>Loading...</div>;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Name:</label>
-        <input {...register("fullName", { required: true })} />
-      </div>
-      <div>
-        <label>Address:</label>
-        <input {...register("address")} />
-      </div>
-      <div>
-        <label>Phone Number:</label>
-        <input {...register("phone")} />
-      </div>
-      <div>
-        <label>Subscription:</label>
-        <select {...register("subscription")}>
-          <option value="free">Free</option>
-          <option value="basic">Basic</option>
-          <option value="premium">Premium</option>
-        </select>
-      </div>
-      <button type="submit">Update Profile</button>
-    </form>
+    <FormContainer>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <Label>Name:</Label>
+          <Input {...register("fullName", { required: true })} />
+        </div>
+        <div>
+          <Label>Address:</Label>
+          <Input {...register("address")} />
+        </div>
+        <div>
+          <Label>Phone Number:</Label>
+          <Input {...register("phone")} />
+        </div>
+        <Button type="submit">Update Profile</Button>
+        <div>
+          {/* <Label>Subscription:</Label>
+          <Select {...register("subscription")}>
+            <option value="free">Free</option>
+            <option value="basic">Basic</option>
+            <option value="premium">Premium</option>
+          </Select> */}
+
+          <Subscription />
+        </div>
+      </Form>
+    </FormContainer>
   );
 };
 
