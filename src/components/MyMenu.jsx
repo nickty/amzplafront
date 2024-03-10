@@ -18,7 +18,7 @@ export const MyMenu = () => {
     <Menu>
       {/* <Menu.DashboardItem /> */}
       <MenuItemLink
-        to="/dashboard"
+        to="/"
         primaryText="Dashboard"
         leftIcon={<DashboardOutlinedIcon />}
         onClick={() => navigate("/dashboard")}

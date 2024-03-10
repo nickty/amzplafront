@@ -21,7 +21,7 @@ const App = () => (
     loginPage={<CustomLoginPage />}
   >
     <CustomRoutes>
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/" element={<Dashboard />} />
     </CustomRoutes>
     <Resource
       name="products"
