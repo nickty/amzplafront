@@ -44,9 +44,7 @@ const CustomLoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    login({ username: email, password }).catch(() =>
-      notify("Invalid email or password")
-    );
+    login({ email, password }).catch(() => notify("Invalid email or password"));
   };
 
   return (

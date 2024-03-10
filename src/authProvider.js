@@ -1,10 +1,8 @@
-// authProvider.js
 export default {
-  login: ({ username, password }) => {
-    // Example API call
+  login: ({ email, password }) => {
     return fetch("http://localhost:4000/api/auth/login", {
       method: "POST",
-      body: JSON.stringify({ email: username, password }),
+      body: JSON.stringify({ email, password }),
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
@@ -13,9 +11,19 @@ export default {
       })
       .then((data) => {
         if (data.status === "error") throw new Error(data.message);
+
+        // console.log("Login Response:", data); // Debugging line
+
+        // Ensure you're accessing the response data correctly
         localStorage.setItem(
           "auth",
-          JSON.stringify({ token: data.token, role: data.role })
+          JSON.stringify({
+            token: data.token,
+            role: data.role,
+            id: data.id, // Corrected based on assumed flat structure
+            fullName: data.fullName, // Corrected based on assumed flat structure
+            email: data.email, // Corrected based on assumed flat structure
+          })
         );
         return Promise.resolve();
       });
@@ -36,15 +44,25 @@ export default {
   getPermissions: () => {
     const storedData = localStorage.getItem("auth");
     if (!storedData) {
-      // If there's no data in localStorage, reject the promise
       return Promise.reject();
     }
     try {
       const { role } = JSON.parse(storedData);
-      // Ensure the role exists; otherwise, reject the promise
       return role ? Promise.resolve(role) : Promise.reject();
     } catch (error) {
-      // In case of JSON parsing errors or other issues, reject the promise
+      return Promise.reject(error);
+    }
+  },
+  getIdentity: () => {
+    const storedData = localStorage.getItem("auth");
+    if (!storedData) {
+      return Promise.reject();
+    }
+    try {
+      const { id, fullName, email } = JSON.parse(storedData);
+      // Return the identity details
+      return Promise.resolve({ id, fullName, email });
+    } catch (error) {
       return Promise.reject(error);
     }
   },

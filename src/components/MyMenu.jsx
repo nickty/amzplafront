@@ -25,6 +25,11 @@ export const MyMenu = () => {
       />
       <Menu.ResourceItem name="products" />
       <Menu.ResourceItem name="users" />
+      <MenuItemLink
+        to="/profile"
+        primaryText="Profile"
+        leftIcon={<DashboardOutlinedIcon />}
+      />
       {/* Other resource items */}
       {/* Custom service items */}
       {/* <MenuItemLink

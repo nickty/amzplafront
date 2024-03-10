@@ -12,6 +12,7 @@ import Registration from "./pages/Registration";
 import CustomLoginPage from "./pages/CustomLoginPage";
 import UserList from "./resources/user/UserList";
 import UserEdit from "./resources/user/UserEdit";
+import UserProfileUpdate from "./pages/UserProfileUpdate";
 
 const App = () => (
   <Admin
@@ -22,6 +23,7 @@ const App = () => (
   >
     <CustomRoutes>
       <Route path="/" element={<Dashboard />} />
+      <Route path="/profile" element={<UserProfileUpdate />} />
     </CustomRoutes>
     <Resource
       name="products"
