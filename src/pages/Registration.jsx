@@ -50,11 +50,14 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const request = new Request("http://localhost:4000/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: new Headers({ "Content-Type": "application/json" }),
-    });
+    const request = new Request(
+      `${process.env.REACT_APP_API_BASE_URL}/auth/register`,
+      {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: new Headers({ "Content-Type": "application/json" }),
+      }
+    );
     try {
       const response = await fetch(request);
       if (response.status < 200 || response.status >= 300) {

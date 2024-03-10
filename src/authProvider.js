@@ -1,6 +1,6 @@
 export default {
   login: ({ email, password }) => {
-    return fetch("http://localhost:4000/api/auth/login", {
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify({ email, password }),
       headers: { "Content-Type": "application/json" },

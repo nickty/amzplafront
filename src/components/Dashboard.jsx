@@ -37,14 +37,17 @@ const Dashboard = () => {
     loading: productLoading,
     // error: productError,
   } = useClient(
-    "http://localhost:4000/api/products/countTotalProduct",
+    `${process.env.REACT_APP_API_BASE_URL}/products/countTotalProduct`,
     options
   );
   const {
     data: userCount,
     loading: userLoading,
     // error: userError,
-  } = useClient("http://localhost:4000/api/users/countTotalUser", options);
+  } = useClient(
+    `${process.env.REACT_APP_API_BASE_URL}/users/countTotalUser`,
+    options
+  );
 
   return (
     <Box sx={{ mt: 5, mx: 2 }}>

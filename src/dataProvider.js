@@ -1,7 +1,7 @@
 // dataProvider.js
 import { fetchUtils } from "react-admin";
 
-const apiUrl = "http://localhost:4000/api"; // Update the API URL with your actual backend API URL
+const apiUrl = `${process.env.REACT_APP_API_BASE_URL}`; // Update the API URL with your actual backend API URL
 
 export const httpClient = (url, options = {}) => {
   if (!options.headers) {
