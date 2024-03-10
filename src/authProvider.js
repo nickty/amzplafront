@@ -23,6 +23,7 @@ export default {
             id: data.id, // Corrected based on assumed flat structure
             fullName: data.fullName, // Corrected based on assumed flat structure
             email: data.email, // Corrected based on assumed flat structure
+            subscription: data.subscription,
           })
         );
         return Promise.resolve();
@@ -59,9 +60,9 @@ export default {
       return Promise.reject();
     }
     try {
-      const { id, fullName, email } = JSON.parse(storedData);
+      const { id, fullName, email, subscription } = JSON.parse(storedData);
       // Return the identity details
-      return Promise.resolve({ id, fullName, email });
+      return Promise.resolve({ id, fullName, email, subscription });
     } catch (error) {
       return Promise.reject(error);
     }

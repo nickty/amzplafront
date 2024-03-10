@@ -6,34 +6,44 @@ import Subscription from "../components/Subscription";
 
 // Styled components
 const FormContainer = styled.div`
-  max-width: 700px;
-  margin: 2rem auto;
+  min-width: 800px;
+  margin: 1rem auto;
   padding: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  display: flex; // Ensure this container is a flex container
+  flex-direction: column; // Align children in a column
+  align-items: flex-start; // Align children to the start (left)
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%; // Ensure the form takes the full width of its container
 `;
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
   font-weight: bold;
+  margin-right: 1rem;
+  align-self: flex-start; // Ensure labels are aligned to the start within flex containers
 `;
 
 const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%; // Inputs take the full width available, ensuring left alignment
 `;
 
-const Select = styled.select`
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+const Button2 = styled.span`
+  padding: 0.2rem 0.7rem;
+  border-radius: 5px;
+  display: inline-block;
+  background-color: red;
+  color: white;
+  margin-left: 1rem;
 `;
 
 const Button = styled.button`
@@ -41,6 +51,8 @@ const Button = styled.button`
   background-color: #007bff;
   color: white;
   border: none;
+  width: 200px;
+  margin-top: 1rem;
   border-radius: 4px;
   cursor: pointer;
   &:hover {
@@ -82,6 +94,8 @@ const UserProfileUpdate = () => {
       return;
     }
 
+    console.log("check submission", formData);
+
     dataProvider
       .update("users", { id: data.id, data: formData })
       .then(() => {
@@ -110,14 +124,10 @@ const UserProfileUpdate = () => {
           <Input {...register("phone")} />
         </div>
         <Button type="submit">Update Profile</Button>
+        <line>...</line>
         <div>
-          {/* <Label>Subscription:</Label>
-          <Select {...register("subscription")}>
-            <option value="free">Free</option>
-            <option value="basic">Basic</option>
-            <option value="premium">Premium</option>
-          </Select> */}
-
+          <label>Current Plan:</label>
+          <Button2>{data.subscription}</Button2>
           <Subscription />
         </div>
       </Form>
