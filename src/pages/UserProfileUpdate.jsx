@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useDataProvider, useGetIdentity, useNotify } from "react-admin";
+import { useState, useEffect, useCallback } from "react";
+import {
+  useDataProvider,
+  useGetIdentity,
+  useNotify,
+  useRefresh,
+} from "react-admin";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Subscription from "../components/Subscription";
@@ -64,6 +69,7 @@ const UserProfileUpdate = () => {
   const notify = useNotify();
   const { register, handleSubmit, reset } = useForm();
   const [loading, setLoading] = useState(true);
+  const refresh = useRefresh();
   const { data: userData, isLoading: identityLoading } = useGetIdentity();
 
   useEffect(() => {
@@ -88,8 +94,8 @@ const UserProfileUpdate = () => {
         return;
       }
 
-      const profileData = { ...formData }; // Copy form data
-      delete profileData.subscription; // Remove subscription data
+      // const profileData = { ...formData }; // Copy form data
+      // delete profileData.subscription; // Remove subscription data
 
       setLoading(true);
       dataProvider
@@ -113,20 +119,25 @@ const UserProfileUpdate = () => {
       }
 
       setLoading(true);
-      dataProvider
-        .update("users", {
-          id: userData.id,
-          data: { subscription: newSubscription },
-        })
-        .then(() => {
-          notify("Subscription updated successfully", "info");
-        })
-        .catch((error) => {
-          notify("Error updating subscription", "error");
-        })
-        .finally(() => setLoading(false));
+
+      // Retrieve existing user data from local storage
+      const storedUserData = JSON.parse(localStorage.getItem("auth"));
+
+      // Update only the subscription field
+      const updatedUserData = {
+        ...storedUserData,
+        subscription: newSubscription,
+      };
+
+      // Save the updated user data back to local storage
+      localStorage.setItem("auth", JSON.stringify(updatedUserData));
+
+      // Notify user and refresh UI
+      notify("Subscription updated successfully", "info");
+      refresh();
+      setLoading(false);
     },
-    [dataProvider, notify, userData]
+    [notify, userData, refresh]
   );
 
   if (loading || identityLoading) return <div>Loading...</div>;
