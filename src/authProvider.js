@@ -34,9 +34,19 @@ export default {
     return Promise.resolve();
   },
   checkError: (error) => {
-    if (error.status === 401 || error.status === 403) {
-      localStorage.removeItem("auth");
-      return Promise.reject();
+    // Check if error is an object and has a 'status' property
+    if (error && typeof error === "object" && "status" in error) {
+      if (error.status === 401 || error.status === 403) {
+        localStorage.removeItem("auth");
+        return Promise.reject(new Error("Unauthorized or Forbidden"));
+      }
+    } else {
+      // If error does not have a status, it might be structured differently
+      // Log the error to see its structure
+      console.error("Unexpected error format:", error);
+
+      // Optionally handle this case differently, e.g., by rejecting the promise with a generic error message
+      return Promise.reject(new Error("An unexpected error occurred"));
     }
     return Promise.resolve();
   },
