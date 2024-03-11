@@ -94,8 +94,8 @@ const UserProfileUpdate = () => {
         return;
       }
 
-      // const profileData = { ...formData }; // Copy form data
-      // delete profileData.subscription; // Remove subscription data
+      const profileData = { ...formData }; // Copy form data
+      delete profileData.subscription; // Remove subscription data
 
       setLoading(true);
       dataProvider
