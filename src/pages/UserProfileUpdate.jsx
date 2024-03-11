@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDataProvider, useGetIdentity, useNotify } from "react-admin";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -11,30 +11,29 @@ const FormContainer = styled.div`
   padding: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  display: flex; // Ensure this container is a flex container
-  flex-direction: column; // Align children in a column
-  align-items: flex-start; // Align children to the start (left)
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 100%; // Ensure the form takes the full width of its container
+  width: 100%;
 `;
 
 const Label = styled.label`
   margin-bottom: 0.5rem;
   font-weight: bold;
   margin-right: 1rem;
-  align-self: flex-start; // Ensure labels are aligned to the start within flex containers
 `;
 
 const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%; // Inputs take the full width available, ensuring left alignment
+  width: 100%;
 `;
 
 const Button2 = styled.span`
@@ -65,58 +64,58 @@ const UserProfileUpdate = () => {
   const notify = useNotify();
   const { register, handleSubmit, reset } = useForm();
   const [loading, setLoading] = useState(true);
-
-  const { error, data, isLoading: identityLoading } = useGetIdentity();
+  const { data: userData, isLoading: identityLoading } = useGetIdentity();
 
   useEffect(() => {
-    if (identityLoading) return;
-    if (!data) {
-      notify("User is not authenticated.", "warning");
-      setLoading(false);
-      return;
-    }
+    if (identityLoading || !userData) return;
 
     dataProvider
-      .getOne("users", { id: data.id })
+      .getOne("users", { id: userData.id })
       .then(({ data }) => {
-        reset(data);
+        reset(data); // Reset form with fetched data
         setLoading(false);
       })
       .catch((error) => {
         notify("Error loading user profile", "error");
         setLoading(false);
       });
-  }, [data, identityLoading, dataProvider, notify, reset]);
+  }, [dataProvider, notify, reset, userData, identityLoading]);
 
-  const onSubmit = (formData) => {
-    if (!data) {
-      notify("User is not authenticated.", "warning");
-      return;
-    }
-
-    dataProvider
-      .update("users", { id: data.id, data: formData })
-      .then(() => {
-        notify("Profile updated successfully", "info");
-        console.log("check after subs", data);
-      })
-      .catch((error) => {
-        notify("Error updating profile", "error");
-      });
-  };
-
-  // Inside UserProfileUpdate component
-  const handleSubscriptionChange = useCallback(
-    (newSubscription) => {
-      // Assuming `data.id` is the user ID
-      if (!data) {
+  const onSubmit = useCallback(
+    (formData) => {
+      if (!userData) {
         notify("User is not authenticated.", "warning");
         return;
       }
-      console.log("check for subs", newSubscription);
+
+      const profileData = { ...formData }; // Copy form data
+      delete profileData.subscription; // Remove subscription data
+
+      setLoading(true);
+      dataProvider
+        .update("users", { id: userData.id, data: profileData })
+        .then(() => {
+          notify("Profile updated successfully", "info");
+        })
+        .catch((error) => {
+          notify("Error updating profile", "error");
+        })
+        .finally(() => setLoading(false));
+    },
+    [dataProvider, notify, userData]
+  );
+
+  const handleSubscriptionChange = useCallback(
+    (newSubscription) => {
+      if (!userData) {
+        notify("User is not authenticated.", "warning");
+        return;
+      }
+
+      setLoading(true);
       dataProvider
         .update("users", {
-          id: data.id,
+          id: userData.id,
           data: { subscription: newSubscription },
         })
         .then(() => {
@@ -124,10 +123,11 @@ const UserProfileUpdate = () => {
         })
         .catch((error) => {
           notify("Error updating subscription", "error");
-        });
+        })
+        .finally(() => setLoading(false));
     },
-    [dataProvider, data, notify]
-  ); // Add any other dependencies if needed
+    [dataProvider, notify, userData]
+  );
 
   if (loading || identityLoading) return <div>Loading...</div>;
 
@@ -135,25 +135,24 @@ const UserProfileUpdate = () => {
     <FormContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <Label>Name:</Label>
-          <Input {...register("fullName", { required: true })} />
+          <Label htmlFor="fullName">Name:</Label>
+          <Input id="fullName" {...register("fullName")} />
         </div>
         <div>
-          <Label>Address:</Label>
-          <Input {...register("address")} />
+          <Label htmlFor="address">Address:</Label>
+          <Input id="address" {...register("address")} />
         </div>
         <div>
-          <Label>Phone Number:</Label>
-          <Input {...register("phone")} />
+          <Label htmlFor="phone">Phone Number:</Label>
+          <Input id="phone" {...register("phone")} />
         </div>
         <Button type="submit">Update Profile</Button>
-        <p>...</p>
-        <div>
-          <label>Current Plan:</label>
-          <Button2>{data.subscription}</Button2>
-        </div>
-        <Subscription onSubscriptionChange={handleSubscriptionChange} />
       </Form>
+      <div>
+        <Label>Current Plan:</Label>
+        <Button2>{userData?.subscription}</Button2>
+        <Subscription onSubscriptionChange={handleSubscriptionChange} />
+      </div>
     </FormContainer>
   );
 };
