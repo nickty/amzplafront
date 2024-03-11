@@ -1,13 +1,27 @@
 import { loadStripe } from "@stripe/stripe-js";
+
 // Assuming you have set your publishable key
-const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_TEST_KEY}`);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_TEST_KEY);
 
 const handleSubscriptionUpdateFunc = async (plan) => {
-  // Get Stripe.js instance
   const stripe = await stripePromise;
 
-  // Call your backend to create the PaymentIntent
+  // Example dynamic price selection based on plan
+  const priceMap = {
+    free: null, // Assuming no charge for the free plan
+    basic: "basic", // Replace with your actual price ID for the basic plan
+    premium: "premium", // Replace with your actual price ID for the premium plan
+  };
+
+  const selectedPriceId = priceMap[plan];
+
+  if (!selectedPriceId) {
+    alert("Free plan selected or invalid plan. No payment required.");
+    return;
+  }
+
   try {
+    // Assume your backend correctly handles receiving the plan and returns the corresponding Stripe price ID
     const response = await fetch(
       `${process.env.REACT_APP_API_BASE_URL}/payment/create-payment-intent`,
       {
@@ -19,18 +33,17 @@ const handleSubscriptionUpdateFunc = async (plan) => {
       }
     );
 
-    const { priceId } = await response.json();
+    console.log("check check", response);
 
-    // When the customer clicks on the button, redirect them to Checkout.
+    const { sessionId } = await response.json();
+
     const { error } = await stripe.redirectToCheckout({
-      mode: "subscription",
-      lineItems: [{ price: priceId, quantity: 1 }],
-      successUrl: "http://localhost:4000/success",
-      cancelUrl: "http://localhost:4000/cancel",
+      sessionId,
     });
 
     if (error) {
-      throw new Error(error.message);
+      console.error("Error during payment:", error.message);
+      alert("Payment failed. Please try again later.");
     }
   } catch (error) {
     console.error("Error during payment:", error.message);
