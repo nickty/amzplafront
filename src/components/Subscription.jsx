@@ -44,7 +44,11 @@ const UpdateButton = styled.button`
 `;
 
 // Subscription component
-const Subscription = () => {
+const Subscription = ({ onSubscriptionChange }) => {
+  const handleSubscriptionUpdate = (plan) => {
+    // Call the onSubscriptionChange function with the selected plan
+    onSubscriptionChange(plan);
+  };
   return (
     <SubscriptionSection>
       {/* Subscription card 1 */}
@@ -55,7 +59,9 @@ const Subscription = () => {
           <InfoItem>Feature 2</InfoItem>
           <InfoItem>Feature 3</InfoItem>
         </InfoList>
-        <UpdateButton>Update Subscription</UpdateButton>
+        <UpdateButton onClick={() => handleSubscriptionUpdate("free")}>
+          Update Subscription
+        </UpdateButton>
       </SubscriptionCard>
 
       {/* Subscription card 2 */}
@@ -67,7 +73,9 @@ const Subscription = () => {
           <InfoItem>Feature 3</InfoItem>
           <InfoItem>Feature 4</InfoItem>
         </InfoList>
-        <UpdateButton>Update Subscription</UpdateButton>
+        <UpdateButton onClick={() => handleSubscriptionUpdate("basic")}>
+          Update Subscription
+        </UpdateButton>
       </SubscriptionCard>
 
       {/* Subscription card 3 */}
@@ -80,7 +88,9 @@ const Subscription = () => {
           <InfoItem>Feature 4</InfoItem>
           <InfoItem>Feature 5</InfoItem>
         </InfoList>
-        <UpdateButton>Update Subscription</UpdateButton>
+        <UpdateButton onClick={() => handleSubscriptionUpdate("premium")}>
+          Update Subscription
+        </UpdateButton>
       </SubscriptionCard>
     </SubscriptionSection>
   );

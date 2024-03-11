@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDataProvider, useGetIdentity, useNotify } from "react-admin";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -94,17 +94,40 @@ const UserProfileUpdate = () => {
       return;
     }
 
-    console.log("check submission", formData);
-
     dataProvider
       .update("users", { id: data.id, data: formData })
       .then(() => {
         notify("Profile updated successfully", "info");
+        console.log("check after subs", data);
       })
       .catch((error) => {
         notify("Error updating profile", "error");
       });
   };
+
+  // Inside UserProfileUpdate component
+  const handleSubscriptionChange = useCallback(
+    (newSubscription) => {
+      // Assuming `data.id` is the user ID
+      if (!data) {
+        notify("User is not authenticated.", "warning");
+        return;
+      }
+      console.log("check for subs", newSubscription);
+      dataProvider
+        .update("users", {
+          id: data.id,
+          data: { subscription: newSubscription },
+        })
+        .then(() => {
+          notify("Subscription updated successfully", "info");
+        })
+        .catch((error) => {
+          notify("Error updating subscription", "error");
+        });
+    },
+    [dataProvider, data, notify]
+  ); // Add any other dependencies if needed
 
   if (loading || identityLoading) return <div>Loading...</div>;
 
@@ -124,12 +147,12 @@ const UserProfileUpdate = () => {
           <Input {...register("phone")} />
         </div>
         <Button type="submit">Update Profile</Button>
-        <line>...</line>
+        <p>...</p>
         <div>
           <label>Current Plan:</label>
           <Button2>{data.subscription}</Button2>
-          <Subscription />
         </div>
+        <Subscription onSubscriptionChange={handleSubscriptionChange} />
       </Form>
     </FormContainer>
   );
