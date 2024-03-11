@@ -3,7 +3,7 @@ import styled from "styled-components";
 // Styled components
 const SubscriptionSection = styled.section`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 2rem;
 `;
 

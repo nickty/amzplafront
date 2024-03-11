@@ -11,7 +11,7 @@ import Subscription from "../components/Subscription";
 
 // Styled components
 const FormContainer = styled.div`
-  min-width: 800px;
+  max-width: 700px;
   margin: 1rem auto;
   padding: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -159,6 +159,7 @@ const UserProfileUpdate = () => {
         </div>
         <Button type="submit">Update Profile</Button>
       </Form>
+      <div style={{ margin: 20 }}>...</div>
       <div>
         <Label>Current Plan:</Label>
         <Button2>{userData?.subscription}</Button2>
