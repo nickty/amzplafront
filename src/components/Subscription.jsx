@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import handleSubscriptionUpdateFunc from "../utils/handleSubscriptionUpdateFunc";
 
 // Styled components
 const SubscriptionSection = styled.section`
@@ -46,8 +47,26 @@ const UpdateButton = styled.button`
 // Subscription component
 const Subscription = ({ onSubscriptionChange }) => {
   const handleSubscriptionUpdate = (plan) => {
-    // Call the onSubscriptionChange function with the selected plan
-    onSubscriptionChange(plan);
+    // Example condition: Only Basic and Premium plans require payment
+    if (plan === "basic" || plan === "premium") {
+      // Here, you would integrate your payment modal logic
+      // For demonstration, let's simulate a payment process with a simple confirmation
+      const isPaymentSuccessful = window.confirm(
+        `Confirm payment for ${plan} plan?`
+      );
+
+      handleSubscriptionUpdateFunc(plan);
+
+      // If payment is successful, update the subscription
+      if (isPaymentSuccessful) {
+        onSubscriptionChange(plan);
+      } else {
+        alert("Payment failed or was cancelled.");
+      }
+    } else {
+      // For free plan, update directly without payment
+      onSubscriptionChange(plan);
+    }
   };
   return (
     <SubscriptionSection>

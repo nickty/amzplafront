@@ -750,6 +750,11 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.15.2.tgz#35726510d332ba5349c6398d13259d5da184553d"
   integrity sha512-+Rnav+CaoTE5QJc4Jcwh5toUpnVLKYbpU6Ys0zqbakqbaLQHeglLVHPfxOiQqdNmUy5C2lXz5dwC6tQNX2JW2Q==
 
+"@stripe/stripe-js@^3.0.7":
+  version "3.0.7"
+  resolved "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-3.0.7.tgz#ceec7db210830d742c1ba2a697ddaf3a210542af"
+  integrity sha512-qmjTsxnst84iWDsGqPxk5Wlff/fG4nSFjy/r24t9WWFAlCuvwnuUAe4eGgbqZBng019AtgWvo8wuhM3Y5/olbw==
+
 "@types/babel__core@^7.20.5":
   version "7.20.5"
   resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"
