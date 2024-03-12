@@ -1,45 +1,36 @@
 import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 
-// Assuming you have set your publishable key
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_TEST_KEY);
+// Load your Stripe publishable key here
+const stripePromise = loadStripe("pk_test_5FP3G91UsZjWsz1Wo9ORkFpO");
 
 const handleSubscriptionUpdateFunc = async (plan) => {
   const stripe = await stripePromise;
 
-  // Example dynamic price selection based on plan
+  // Mapping plan to Stripe Price ID
   const priceMap = {
-    free: null, // Assuming no charge for the free plan
-    basic: "basic", // Replace with your actual price ID for the basic plan
-    premium: "premium", // Replace with your actual price ID for the premium plan
+    free: null,
+    basic: "price_1OtBVLDfbgwMzlY8bk5uqP65", // Your Stripe Price ID for basic
+    premium: "price_1OtOQADfbgwMzlY83ikrPJJ3", // Your Stripe Price ID for premium
   };
 
-  const selectedPriceId = priceMap[plan];
+  const priceId = priceMap[plan];
 
-  if (!selectedPriceId) {
+  if (!priceId) {
     alert("Free plan selected or invalid plan. No payment required.");
     return;
   }
 
   try {
-    // Assume your backend correctly handles receiving the plan and returns the corresponding Stripe price ID
-    const response = await fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/payment/create-payment-intent`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ plan }),
-      }
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/payment/create-checkout-session`,
+      { planId: priceId }
     );
 
-    console.log("check check", response);
+    const { sessionId } = response.data;
 
-    const { sessionId } = await response.json();
-
-    const { error } = await stripe.redirectToCheckout({
-      sessionId,
-    });
+    // Redirect to Stripe Checkout
+    const { error } = await stripe.redirectToCheckout({ sessionId });
 
     if (error) {
       console.error("Error during payment:", error.message);
