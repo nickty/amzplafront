@@ -43,14 +43,13 @@ export const MyMenu = () => {
         primaryText="SEO Tools"
         leftIcon={<PlumbingOutlinedIcon />}
         onClick={() => navigate("/seo-tools")}
-      />
+      /> */}
       <MenuItemLink
         to="/customer-service"
         primaryText="Auto Customer Service"
         leftIcon={<SupportAgentOutlinedIcon />}
-        onClick={() => navigate("/customer-service")}
       />
-      <MenuItemLink
+      {/* <MenuItemLink
         to="/cross-ecommerce"
         primaryText="Other Ecommerce"
         leftIcon={<AddShoppingCartOutlinedIcon />}

@@ -39,20 +39,20 @@ const App = () => (
     <CustomRoutes noLayout>
       <Route key="register" path="/register" element={<Registration />} />,
     </CustomRoutes>
-    {/* <CustomRoutes>
-      <Route
+    <CustomRoutes>
+      {/* <Route
         path="/market-analysis"
         element={<ComingSoon service="Market Analysis" />}
-      />
-      <Route
+      /> */}
+      {/* <Route
         path="/seo-tools"
         element={<ComingSoon service="Advanced SEO tools" />}
-      />
+      /> */}
       <Route
         path="/customer-service"
         element={<ComingSoon service="Auto Customer Service" />}
       />
-      <Route
+      {/* <Route
         path="/cross-ecommerce"
         element={<ComingSoon service="Cross Platform Ecommerce" />}
       />
@@ -69,8 +69,8 @@ const App = () => (
       <Route
         path="/sustainability-tracking"
         element={<ComingSoon service="Sustainability Tracking" />}
-      />
-    </CustomRoutes> */}
+      /> */}
+    </CustomRoutes>
   </Admin>
 );
 
