@@ -1,4 +1,5 @@
 import React from "react";
+import PDFResult from "../utils/PDFResult";
 
 const AnalysisResult = ({ analysis }) => {
   if (!analysis) {
@@ -35,6 +36,8 @@ const AnalysisResult = ({ analysis }) => {
           </li>
         ))}
       </ul>
+
+      <PDFResult analysis={analysis} />
     </div>
   );
 };
