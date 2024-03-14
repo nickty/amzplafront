@@ -30,6 +30,11 @@ export const MyMenu = () => {
         primaryText="Profile"
         leftIcon={<DashboardOutlinedIcon />}
       />
+      <MenuItemLink
+        to="/seo-tools"
+        primaryText="Seo Tools"
+        leftIcon={<DashboardOutlinedIcon />}
+      />
       {/* Other resource items */}
       {/* Custom service items */}
       {/* <MenuItemLink

@@ -13,6 +13,7 @@ import CustomLoginPage from "./pages/CustomLoginPage";
 import UserList from "./resources/user/UserList";
 import UserEdit from "./resources/user/UserEdit";
 import UserProfileUpdate from "./pages/UserProfileUpdate";
+import SEOCheckPage from "./pages/SEOCheckPage";
 
 const App = () => (
   <Admin
@@ -44,14 +45,12 @@ const App = () => (
         path="/market-analysis"
         element={<ComingSoon service="Market Analysis" />}
       /> */}
-      {/* <Route
-        path="/seo-tools"
-        element={<ComingSoon service="Advanced SEO tools" />}
-      /> */}
       <Route
         path="/customer-service"
         element={<ComingSoon service="Auto Customer Service" />}
       />
+      ,
+      <Route path="/seo-tools" element={<SEOCheckPage />} />
       {/* <Route
         path="/cross-ecommerce"
         element={<ComingSoon service="Cross Platform Ecommerce" />}
