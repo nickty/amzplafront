@@ -4,24 +4,28 @@ import React, { useState } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import axios from "axios";
 import CustomButton from "../components/CustomButton";
+import AnalysisResult from "../components/AnalysisResult";
 
 const SEOCheckPage = () => {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState("https://www.espncricinfo.com/");
   const [seoHealth, setSEOHealth] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [analysis, setAnalysis] = useState(null);
 
   const handleUrlChange = (event) => {
     setUrl(event.target.value);
   };
 
+  //   console.log("Hello", analysis);
   const handleCheckSEO = async () => {
     try {
       setLoading(true);
       const response = await axios.post("http://localhost:4000/api/seo-check", {
         url,
       });
-      setSEOHealth(response.data);
+      //   setSEOHealth(response.data);
+      setAnalysis(response.data);
       //   console.log("seo response", response.data);
       setLoading(false);
     } catch (error) {
@@ -50,21 +54,8 @@ const SEOCheckPage = () => {
       >
         {loading ? "Checking..." : "Check SEO Health"}
       </CustomButton>
-      {error && (
-        <Typography variant="body2" color="error">
-          {error}
-        </Typography>
-      )}
-      {seoHealth && (
-        <div>
-          <Typography variant="h5">SEO Health Result</Typography>
-          {/* Display SEO health result here */}
-          {console.log("check health", seoHealth)}
-          <Typography variant="h5" color="error">
-            {seoHealth.title}
-          </Typography>
-        </div>
-      )}
+
+      <AnalysisResult analysis={analysis} />
     </>
   );
 };
